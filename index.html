@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Для Сони 💌</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  
+  <!-- конфетти -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <style>
+    :root { --accent: #ff4f8b; }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(-45deg, #ffd6e8, #ffe8d6, #fff0f5, #ffe0ec);
+      background-size: 300% 300%;
+      animation: bg 18s ease infinite;
+      color: #a64d79;
+      overflow: hidden;
+      height: 100vh;
+      margin: 0;
+      position: relative;
+    }
+
+    @keyframes bg {
+      0%   { background-position: 0% 50% }
+      50%  { background-position: 100% 50% }
+      100% { background-position: 0% 50% }
+    }
+
+    section {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+      padding: 24px;
+      position: absolute;
+      inset: 0;
+      transition: .6s ease;
+      z-index: 10;
+    }
+
+    .hidden { opacity: 0; pointer-events: none; visibility: hidden; }
+
+    .glass {
+      background: rgba(255,255,255,0.45);
+      backdrop-filter: blur(12px);
+      padding: 32px 40px;
+      border-radius: 28px;
+      box-shadow: 0 15px 50px rgba(0,0,0,.15);
+      width: 100%;
+      max-width: 580px;
+      position: relative;
+      z-index: 12;
+    }
+
+    /* Фото на весь экран в финале */
+    #final {
+      background: url('photo.jpg') center center / cover no-repeat;
+      background-attachment: fixed;
+    }
+
+    #final .glass {
+      background: rgba(0,0,0,0.45);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.2);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+
+    #final h1, #final p, #final .loveGlow {
+      color: white;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.7);
+    }
+
+    h1, h2 {
+      font-family: 'Playfair Display', serif;
+      margin-bottom: 18px;
+    }
+
+    button {
+      padding: 14px 26px;
+      border: none;
+      border-radius: 50px;
+      background: linear-gradient(135deg, #ff8fb1, #ff4f8b);
+      color: white;
+      font-size: 16px;
+      margin: 8px;
+      box-shadow: 0 8px 25px rgba(255,105,160,.35);
+      transition: all .3s ease;
+      cursor: pointer;
+      position: relative;
+    }
+
+    button:active { transform: scale(0.94); }
+
+    #noBtn {
+      background: linear-gradient(135deg, #a8a8a8, #7a7a7a);
+      z-index: 30;
+    }
+
+    #noBtn.moving {
+      position: absolute !important;
+      transition: all 0.5s ease-out;
+    }
+
+    #hint {
+      margin-top: 24px;
+      font-size: 1.1em;
+      color: #ff4f8b;
+      font-weight: 500;
+      opacity: 0.9;
+    }
+
+    .typewriter {
+      overflow: hidden;
+      white-space: nowrap;
+      margin: 0 auto;
+      letter-spacing: 0.5px;
+      animation: typing 3.8s steps(28, end) forwards, blink-caret .8s step-end infinite;
+      border-right: 3px solid #fff;
+      width: 0;
+    }
+
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
+
+    @keyframes blink-caret {
+      from, to { border-color: transparent }
+      50% { border-color: #fff; }
+    }
+
+    .falling-heart {
+      position: fixed;
+      font-size: 20px;
+      pointer-events: none;
+      z-index: 3;
+      animation: fall linear forwards;
+    }
+
+    @keyframes fall {
+      0%   { transform: translateY(-10vh) rotate(0deg); opacity: 0.9; }
+      100% { transform: translateY(110vh) rotate(1080deg); opacity: 0; }
+    }
+
+    .love-text {
+      position: fixed;
+      font-size: 15px;
+      color: #ff4f8b;
+      opacity: 0.38;
+      pointer-events: none;
+      animation: floatLove 10s linear forwards;
+      white-space: nowrap;
+      z-index: 1;
+    }
+
+    @keyframes floatLove {
+      from { transform: translateY(110vh); opacity: 0; }
+      12%  { opacity: 0.55; }
+      88%  { opacity: 0.5; }
+      to   { transform: translateY(-25vh); opacity: 0; }
+    }
+
+    .heart3d {
+      width: 140px;
+      height: 140px;
+      position: relative;
+      animation: rotate 8s linear infinite;
+      cursor: pointer;
+      margin: 40px auto;
+      z-index: 15;
+    }
+
+    @keyframes rotate {
+      from { transform: rotateY(0deg); }
+      to   { transform: rotateY(360deg); }
+    }
+
+    .heart3d:before,
+    .heart3d:after {
+      content: "";
+      position: absolute;
+      width: 70px;
+      height: 115px;
+      background: var(--accent);
+      border-radius: 70px 70px 0 0;
+    }
+
+    .heart3d:before {
+      left: 70px;
+      transform: rotate(-45deg);
+      transform-origin: 0 100%;
+    }
+
+    .heart3d:after {
+      left: 0;
+      transform: rotate(45deg);
+      transform-origin: 100% 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <section id="intro">
+    <div class="glass">
+      <h1>Соня, у меня для тебя кое-что особенное… 💌</h1>
+      <button onclick="start()">Открыть валентинку</button>
+    </div>
+  </section>
+
+  <section id="quest" class="hidden">
+    <div class="glass">
+      <h2>Ты будешь моей навсегда? 💖</h2>
+      <button onclick="yesAnswer()">💕 Да</button>
+      <button id="noBtn">💔 Нет</button>
+      <p id="tease" style="margin-top:16px; min-height:1.5em;"></p>
+      <div id="hint">Попробуй нажать «Нет» 😏</div>
+    </div>
+  </section>
+
+  <section id="heartSection" class="hidden">
+    <div class="glass">
+      <h2>Нажми на сердце 💗</h2>
+      <div class="heart3d" onclick="transformLove()"></div>
+    </div>
+  </section>
+
+  <section id="final" class="hidden">
+    <div class="glass">
+      <div class="loveGlow">💖</div>
+      <h1><span id="typewriterText" class="typewriter">Соня, я тебя люблю</span></h1>
+      <p style="margin-top:24px; font-size:1.2em;">Навсегда твой, Максим 💌</p>
+    </div>
+  </section>
+
+<script>
+// фразы любви
+const loveReasons = [
+  "Ты делаешь мой мир ярче", "С тобой я чувствую себя дома", "Ты умеешь смешить меня",
+  "Ты очень красивая", "Ты заботливая", "Ты добрая", "Ты вдохновляешь меня",
+  "Ты моя Соня ❤️", "Ты лучшее что со мной случалось", "Ты моя жизнь",
+  "Ты моя любовь всей жизни", "Ты моё счастье", "Ты мой мир", "Ты мой смысл"
+];
+
+function spawnLoveText() {
+  const text = document.createElement("div");
+  text.className = "love-text";
+  text.innerText = loveReasons[Math.floor(Math.random() * loveReasons.length)];
+  text.style.left = Math.random() * 92 + 4 + "vw";
+  text.style.animationDuration = (8 + Math.random() * 4) + "s";
+  document.body.appendChild(text);
+  setTimeout(() => text.remove(), 13000);
+}
+
+for (let i = 0; i < 5; i++) setTimeout(spawnLoveText, i * 150);
+setInterval(spawnLoveText, 300 + Math.random() * 400);
+
+// элементы
+const intro       = document.getElementById("intro");
+const quest       = document.getElementById("quest");
+const heartSection = document.getElementById("heartSection");
+const final       = document.getElementById("final");
+const noBtn       = document.getElementById("noBtn");
+const tease       = document.getElementById("tease");
+const hint        = document.getElementById("hint");
+const typewriter  = document.getElementById("typewriterText");
+
+function start() {
+  intro.classList.add("hidden");
+  quest.classList.remove("hidden");
+}
+
+let attempts = 0;
+
+noBtn.onclick = function(e) {
+  e.preventDefault();
+  attempts++;
+
+  if (attempts === 1) tease.innerText = "Эй… ты серьёзно? 😳";
+  else if (attempts === 2) tease.innerText = "Ну пожалуйста… 🥺";
+  else if (attempts === 3) tease.innerText = "Ты же не всерьёз… правда? 💔";
+  else if (attempts <= 6) tease.innerText = "Я всё равно дождусь 💙";
+  else tease.innerText = "Ты не сдаёшься... я тоже ❤️";
+
+  // позиция убегания
+  const maxX = window.innerWidth - noBtn.offsetWidth - 40;
+  const maxY = window.innerHeight - noBtn.offsetHeight - 40;
+
+  const newX = Math.random() * maxX;
+  const newY = Math.random() * maxY;
+
+  noBtn.classList.add("moving");
+  noBtn.style.left = newX + "px";
+  noBtn.style.top  = newY + "px";
+
+  // уменьшение и замедление после нескольких попыток
+  const scale = Math.max(0.4, 1 - attempts * 0.08);
+  noBtn.style.transform = `scale(${scale})`;
+  noBtn.style.transition = `all ${0.4 + attempts * 0.08}s ease-out`; // становится медленнее
+};
+
+function yesAnswer() {
+  quest.classList.add("hidden");
+  heartSection.classList.remove("hidden");
+
+  confetti({
+    particleCount: 140,
+    spread: 80,
+    origin: { y: 0.6 },
+    colors: ['#ff4f8b', '#ff8fb1', '#ffffff', '#ffe0ec']
+  });
+  setTimeout(() => {
+    confetti({ particleCount: 100, spread: 110, origin: { y: 0.7 } });
+  }, 400);
+}
+
+function createFallingHeart() {
+  const heart = document.createElement("div");
+  heart.className = "falling-heart";
+  heart.innerText = ["💖","💕","❤️","✨"][Math.floor(Math.random()*4)];
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.animationDuration = (3 + Math.random() * 3) + "s";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 9000);
+}
+
+function startHeartRain() {
+  const interval = setInterval(createFallingHeart, 140);
+  setTimeout(() => clearInterval(interval), 4000);
+}
+
+function transformLove() {
+  const texts = document.querySelectorAll(".love-text");
+  const centerX = window.innerWidth / 2;
+  const centerY = window.innerHeight / 2;
+
+  texts.forEach(t => {
+    const rect = t.getBoundingClientRect();
+    const heart = document.createElement("div");
+    heart.className = "small-heart";
+    heart.innerText = "💖";
+    heart.style.left = rect.left + "px";
+    heart.style.top  = rect.top  + "px";
+    document.body.appendChild(heart);
+    t.remove();
+
+    setTimeout(() => {
+      heart.style.left = centerX + "px";
+      heart.style.top  = centerY + "px";
+      heart.style.transform = "translate(-50%, -50%) scale(0.4)";
+      heart.style.opacity = "0";
+    }, 80);
+  });
+
+  startHeartRain();
+
+  setTimeout(() => {
+    heartSection.classList.add("hidden");
+    final.classList.remove("hidden");
+
+    typewriter.style.width = "0";
+    typewriter.style.animation = "none";
+    void typewriter.offsetWidth;
+    typewriter.style.animation = "typing 3.8s steps(28, end) forwards, blink-caret .8s step-end infinite";
+  }, 2200);
+}
+</script>
+</body>
+</html>
